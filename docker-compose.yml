@@ -8,7 +8,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./catfoodstore_db/docker/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "5433:5432"     # <<< แก้ตรงนี้
     restart: unless-stopped
 
   backend:
@@ -23,5 +23,6 @@ services:
     depends_on:
       - db
     restart: unless-stopped
+
 volumes:
   postgres_data:
