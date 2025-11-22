@@ -8,18 +8,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./catfoodstore_db/docker/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5433:5432"     # <<< แก้ตรงนี้
+      - "5433:5432"
     restart: unless-stopped
 
   backend:
     build: ./catfoodstore_backend
     container_name: catfoodstore_backend
-    ports:
-      - "8080:8080"
     env_file:
       - ./catfoodstore_backend/.env
-    volumes:
-      - ./catfoodstore_backend:/app
+    ports:
+      - "8080:8080"
     depends_on:
       - db
     restart: unless-stopped
