@@ -1,0 +1,27 @@
+services:
+  db:
+    build: ./catfoodstore_db/docker
+    container_name: catfoodstore_postgres
+    env_file:
+      - ./catfoodstore_db/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./catfoodstore_db/docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    restart: unless-stopped
+
+  backend:
+    build: ./catfoodstore_backend
+    container_name: catfoodstore_backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./catfoodstore_backend/.env
+    volumes:
+      - ./catfoodstore_backend:/app
+    depends_on:
+      - db
+    restart: unless-stopped
+volumes:
+  postgres_data:
